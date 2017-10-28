@@ -39,6 +39,9 @@ public class PlayerScript : NetworkBehaviour {
 		// Add velocity to the bullet
 		bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * 6;
 
+		// Spawn the bullet on the Clients
+		NetworkServer.Spawn(bullet);
+
 		// Destroy the bullet after 2 seconds
 		Destroy(bullet, 2.0f);
 	}
