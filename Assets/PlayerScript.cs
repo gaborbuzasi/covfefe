@@ -41,7 +41,6 @@ public class PlayerScript : NetworkBehaviour {
 
     void OnChangeImage(int chosenImage)
     {
-        //this.gameObject.GetComponent<Renderer>().material.mainTexture = faces[chosenImage];
         GetComponent<Renderer>().material.mainTexture = faces[chosenImage];
     }
 
@@ -68,7 +67,6 @@ public class PlayerScript : NetworkBehaviour {
     void CmdUpdateTexture()
     {
         GetComponent<Renderer>().material.mainTexture = faces[chosenImage];
-        //this.gameObject.GetComponent<Renderer>().material.mainTexture = faces[chosenImage];
     }
 
 }

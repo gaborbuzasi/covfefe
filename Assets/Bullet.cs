@@ -7,7 +7,8 @@ public class Bullet : MonoBehaviour {
 	{
 		var hit = collision.gameObject;
 		var player = hit.GetComponent<PlayerScript>();
-		if (player != null)
+        var enemy = hit.GetComponent<EnemyScript>();
+		if (player || enemy)
 		{
             var health = hit.GetComponent<Health>();
 			health.TakeDamage(10);
