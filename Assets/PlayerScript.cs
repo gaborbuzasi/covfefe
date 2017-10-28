@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -7,9 +8,18 @@ public class PlayerScript : NetworkBehaviour {
 
 	public GameObject bulletPrefab;
 	public Transform bulletSpawn;
+    public Texture[] faces;
 
-	// Update is called once per frame
-	void Update()
+    [SyncVar(hook = "OnChangeImage")]
+    public int chosenImage;
+
+    public void Start()
+    {
+        chosenImage = new System.Random().Next(0, 4);
+    }
+
+    // Update is called once per frame
+    void Update()
 	{
 		if (!isLocalPlayer) {
 			return;
@@ -21,13 +31,21 @@ public class PlayerScript : NetworkBehaviour {
 		transform.Rotate(0, x, 0);
 		transform.Translate(0, 0, z);
 
-		if (Input.GetKeyDown(KeyCode.Space))
+        CmdUpdateTexture();
+
+        if (Input.GetKeyDown(KeyCode.Space))
 		{
 			CmdFire();
 		}
 	}
 
-	[Command]
+    void OnChangeImage(int chosenImage)
+    {
+        //this.gameObject.GetComponent<Renderer>().material.mainTexture = faces[chosenImage];
+        GetComponent<Renderer>().material.mainTexture = faces[chosenImage];
+    }
+
+    [Command]
 	void CmdFire()
 	{
 		// Create the Bullet from the Bullet Prefab
@@ -46,8 +64,11 @@ public class PlayerScript : NetworkBehaviour {
 		Destroy(bullet, 2.0f);
 	}
 
-	public override void OnStartLocalPlayer()
-	{
-		GetComponent<MeshRenderer>().material.color = Color.blue;
-	}
+    [Command]
+    void CmdUpdateTexture()
+    {
+        GetComponent<Renderer>().material.mainTexture = faces[chosenImage];
+        //this.gameObject.GetComponent<Renderer>().material.mainTexture = faces[chosenImage];
+    }
+
 }

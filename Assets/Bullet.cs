@@ -6,12 +6,12 @@ public class Bullet : MonoBehaviour {
 	void OnCollisionEnter(Collision collision)
 	{
 		var hit = collision.gameObject;
-		var health = hit.GetComponent<Health>();
-		if (health != null)
+		var player = hit.GetComponent<PlayerScript>();
+		if (player != null)
 		{
+            var health = hit.GetComponent<Health>();
 			health.TakeDamage(10);
-		}
-
-		Destroy(gameObject);
+            Destroy(gameObject);
+        }
 	}
 }
