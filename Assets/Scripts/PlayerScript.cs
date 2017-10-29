@@ -9,13 +9,19 @@ public class PlayerScript : NetworkBehaviour {
 	public GameObject bulletPrefab;
 	public Transform bulletSpawn;
     public Texture[] faces;
+    private Rigidbody body;
 
     [SyncVar(hook = "OnChangeImage")]
     public int chosenImage;
 
+    private Health healthBar;
+    private float deathTime = -1;
+
     public void Start()
     {
-        chosenImage = new System.Random().Next(0, 4);
+        body = GetComponent<Rigidbody>();
+        this.chosenImage = new System.Random().Next(0, 4);
+        healthBar = GetComponent<Health>();
     }
 
     // Update is called once per frame
@@ -30,14 +36,32 @@ public class PlayerScript : NetworkBehaviour {
 
 		transform.Rotate(0, x, 0);
 		transform.Translate(0, 0, z);
-
         CmdUpdateTexture();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.E))
 		{
 			CmdFire();
 		}
+
+        if (healthBar.currentHealth <= 0)
+        {
+            if (deathTime == -1)
+                deathTime = Time.time;
+
+            if (Time.time - deathTime >= 3)
+            {
+                Destroy(gameObject);
+            }
+        }
 	}
+
+    void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            body.AddForce(Vector3.up * 2, ForceMode.Impulse);
+        }
+    }
 
     void OnChangeImage(int chosenImage)
     {

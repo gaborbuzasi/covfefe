@@ -22,9 +22,10 @@ public class Health : NetworkBehaviour {
 		currentHealth -= amount;
 		if (currentHealth <= 0)
 		{
+            float deathTime = Time.time;
             if (destroyOnDeath)
             {
-                Destroy(gameObject);
+                gameObject.GetComponent<Rigidbody>().freezeRotation = false;
             }
             else
             {
