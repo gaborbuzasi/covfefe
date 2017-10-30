@@ -31,10 +31,11 @@ public class CantStumpWontStump : MonoBehaviour {
         }
         if (personality == 1)
         {
-            transform.LookAt(toLookat.transform);
+            transform.LookAt(hit.collider.transform);
             float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, toLookat.transform.position, step);
-            Debug.LogWarning(toLookat.transform.position);
+            transform.position = Vector3.MoveTowards(transform.position, hit.collider.transform.position, step);
+            Debug.LogWarning("ToLookAt: " + toLookat.transform.position);
+            Debug.LogWarning("HitCollider: " + hit.collider.transform.position);
         }
         
 	}
